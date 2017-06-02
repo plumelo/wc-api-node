@@ -24,13 +24,13 @@ function WooCommerceAPI(opt) {
     throw new Error('url is required');
   }
 
-  if (!(opt.consumerKey)) {
-    throw new Error('consumerKey is required');
-  }
-
-  if (!(opt.consumerSecret)) {
-    throw new Error('consumerSecret is required');
-  }
+  // if (!(opt.consumerKey)) {
+  //   throw new Error('consumerKey is required');
+  // }
+  //
+  // if (!(opt.consumerSecret)) {
+  //   throw new Error('consumerSecret is required');
+  // }
 
   this.classVersion = '1.4.2';
   this._setDefaultsOptions(opt);
@@ -166,28 +166,8 @@ WooCommerceAPI.prototype._request = function(method, endpoint, data, callback) {
       'Accept': 'application/json'
     })
   };
-
-  if (this.isSsl) {
-    if (this.queryStringAuth) {
-      params.qs = {
-        consumer_key: this.consumerKey,
-        consumer_secret: this.consumerSecret
-      };
-    } else {
-      params.auth = {
-        user: this.consumerKey,
-        pass: this.consumerSecret
-      };
-    }
-
-    if (!this.verifySsl) {
-      params.strictSSL = false;
-    }
-  } else {
-    params.qs = this._getOAuth().authorize({
-      url: url,
-      method: method
-    });
+  if (this.isSsl && !this.verifySsl) {
+    params.strictSSL = false;
   }
 
   if (data) {
