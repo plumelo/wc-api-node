@@ -54,6 +54,7 @@ WooCommerceAPI.prototype._setDefaultsOptions = function(opt) {
   this.queryStringAuth = opt.queryStringAuth || false;
   this.port            = opt.port || '';
   this.timeout         = opt.timeout;
+  this.headers         = opt.headers || {};
 };
 
 /**
@@ -160,10 +161,10 @@ WooCommerceAPI.prototype._request = function(method, endpoint, data, callback) {
     method: method,
     encoding: this.encoding,
     timeout: this.timeout,
-    headers: {
+    headers: Object.assign(this.headers, {
       'User-Agent': 'WooCommerce API Client-Node.js/' + this.classVersion,
       'Accept': 'application/json'
-    }
+    })
   };
 
   if (this.isSsl) {
